@@ -1,0 +1,117 @@
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+    networks:
+      - common-net
+
+  metastore-db:
+    image: postgres:11-alpine
+    container_name: metastore-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: hive
+      POSTGRES_PASSWORD: hive
+      POSTGRES_DB: metastore
+    ports:
+      - "5432:5432"
+    volumes:
+      - metastore-data:/var/lib/postgresql/data
+    networks:
+      - common-net
+
+  hive-metastore:
+    build:
+      context: ./hive
+      dockerfile: Dockerfile
+    container_name: hive-metastore
+    depends_on:
+      - metastore-db
+      - minio
+      - minio-init
+    restart: unless-stopped
+    ports:
+      - "9083:9083"
+    networks:
+      - common-net
+
+  trino:
+    image: trinodb/trino:476
+    container_name: trino
+    depends_on:
+      - hive-metastore
+      - minio
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./trino/etc:/etc/trino
+    networks:
+      - common-net
+
+  minio-init:
+    image: python:3.10-slim
+    container_name: minio-init
+    depends_on:
+      - minio
+    restart: "no"
+    volumes:
+      - ./init/create_buckets.py:/init/create_buckets.py
+    command: >
+      /bin/sh -c "pip install --no-cache-dir minio && python /init/create_buckets.py"
+    networks:
+      - common-net
+
+  superset:
+    build:
+      context: ./superset
+      dockerfile: Dockerfile
+    container_name: superset
+    depends_on:
+      - trino
+    restart: unless-stopped
+    command: >
+      /bin/bash -c "
+        echo 'Starting DB upgrade...' &&
+        superset db upgrade &&
+        echo 'DB upgrade done.' &&
+        
+        echo 'Creating admin user...' &&
+        superset fab create-admin --username superset --password superset --firstname Superset --lastname Admin --email tdmanh1510@gmail.com &&
+        echo 'Admin creation done.' &&
+        
+        echo 'Initializing Superset...' &&
+        superset init &&
+        echo 'Initialization done.' &&
+        
+        echo 'Starting Superset server...' &&
+        superset run -h 0.0.0.0 -p 8088 --with-threads --reload --debugger
+      "
+    ports:
+      - 8088:8088
+    volumes:
+      - superset-data:/app/superset_home
+    networks:
+      - common-net
+
+volumes:
+  minio-data:
+    name: minio-data
+  metastore-data:
+    name: metastore-data
+  superset-data:
+    name: superset-data
+
+networks:
+  common-net:
+    external: true
