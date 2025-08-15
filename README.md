@@ -18,6 +18,14 @@ This project's still ongoing.
 
 ![Lakehouse Architecture](readme/lakehouse.png)
 
+**Test creating a table using Trino in DBeaver:**
+
+![Trino Test](readme/trino-example.png)
+
+**Check the result on MinIO:**
+
+![MinIO Result](readme/table-format.png)
+
 ## 2.2 Pipeline
 
 ![Pipeline](readme/pipeline.png)
@@ -28,20 +36,24 @@ This project's still ongoing.
 ```text
 stream-pipeline-via-lakehouse/
 │
-├── init/                             
-├── hive/
-├── trino/                               
-├── spark/
-├── superset/                                                       
-├── src/
-│   ├── bronze/              
-│   ├── silver/
-│   ├── gold/
-│   └── ...
-├── readme/                        
-├── docker-compose-lakehouse.yml   
-├── docker-compose-spark.yml            
-└── docker-compose-kafka.yml             
+├── init/                              # Initialization scripts
+├── hive/                              # Hive metastore configuration + Dockerfile
+├── trino/                             # Trino configuration
+├── spark/                             # Spark configuration + Dockerfile
+├── superset/                          # Superset configuration + Dockerfile
+│
+├── src/                               # ETL source code following the medallion architecture
+│   ├── bronze/                          # Bronze layer – raw ingested data from Kafka
+│   ├── silver/                          # Silver layer – cleaned, standardized, and enriched data
+│   ├── gold/                            # Gold layer – aggregated, analytics-ready data for BI/ML
+│   └── ...                           
+│
+├── readme/                            # Documentation, diagrams, notes
+│
+├── docker-compose-lakehouse.yml       # Docker Compose for the Lakehouse stack (MinIO, Hive, Postgres, Trino), and Superset
+├── docker-compose-spark.yml           # Docker Compose for Spark cluster
+└── docker-compose-kafka.yml           # Docker Compose for Kafka cluster, and Kafka UI
+
 ```
 
 ---
