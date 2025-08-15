@@ -8,6 +8,7 @@
 ---
 
 # 📌 1. Introduction
+This project's still ongoing.
 
 ---
 
@@ -24,6 +25,24 @@
 ---
 
 # 📂 3. Project Structure
+```text
+stream-pipeline-via-lakehouse/
+│
+├── init/                             
+├── hive/
+├── trino/                               
+├── spark/
+├── superset/                                                       
+├── src/
+│   ├── bronze/              
+│   ├── silver/
+│   ├── gold/
+│   └── ...
+├── readme/                        
+├── docker-compose-lakehouse.yml   
+├── docker-compose-spark.yml            
+└── docker-compose-kafka.yml             
+```
 
 ---
 
@@ -36,3 +55,7 @@ Before starting, please ensure you have:
 - Docker Desktop installed and running.
 - VS Code installed to open project.
 - DBeaver installed to connect to Trino to write SQL.
+
+## 4.2 Setup & Initialization
+
+## 4.3 Run the pipeline
