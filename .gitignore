@@ -23,3 +23,5 @@ build/
 *.tgz
 *.rar
 *.7z
+
+spark/conf/spark-env.sh

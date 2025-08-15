@@ -8,15 +8,15 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-RUN pip3 install --no-cache-dir \
-    numpy==1.24.4 \
-    pandas==1.5.3 \
-    pyarrow==11.0.0 \
-    confluent-kafka==2.5.3 \
-    avro==1.11.3 \
-    requests==2.31.0 \
-    fastavro==1.9.0
+# # Install Python dependencies (if you need)
+# RUN pip3 install --no-cache-dir \
+#     numpy==1.24.4 \
+#     pandas==1.5.3 \
+#     pyarrow==11.0.0 \
+#     confluent-kafka==2.5.3 \
+#     avro==1.11.3 \
+#     requests==2.31.0 \
+#     fastavro==1.9.0
 
 # Download required JARs
 WORKDIR /tmp/jars
@@ -28,6 +28,7 @@ RUN curl -L -O https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0
     mv *.jar /opt/bitnami/spark/jars/ && \
     rm -rf /tmp/jars
 
+# I haven't added jars for spark to work with Iceberg table
 
 # Switch back
 WORKDIR /opt/spark/app
