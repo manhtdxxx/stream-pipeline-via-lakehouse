@@ -85,7 +85,7 @@ make --version
 ```bash
 # Navigate to hive/jars folder
 cd hive/jars
-# Run Makefile to install
+# Run Makefile to install (run in Git Bash)
 make download
 ```
 
