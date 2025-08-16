@@ -18,6 +18,14 @@ This project's still ongoing.
 
 ![Lakehouse Architecture](readme/lakehouse.png)
 
+**Test creating a table using Trino in DBeaver:**
+
+![Trino Test](readme/trino-example.png)
+
+**Check the result on MinIO:**
+
+![MinIO Result](readme/table-format.png)
+
 ## 2.2 Pipeline
 
 ![Pipeline](readme/pipeline.png)
@@ -28,20 +36,24 @@ This project's still ongoing.
 ```text
 stream-pipeline-via-lakehouse/
 │
-├── init/                             
-├── hive/
-├── trino/                               
-├── spark/
-├── superset/                                                       
-├── src/
-│   ├── bronze/              
-│   ├── silver/
-│   ├── gold/
-│   └── ...
-├── readme/                        
-├── docker-compose-lakehouse.yml   
-├── docker-compose-spark.yml            
-└── docker-compose-kafka.yml             
+├── init/                              # Initialization scripts
+├── hive/                              # Hive metastore configuration + Dockerfile
+├── trino/                             # Trino configuration
+├── spark/                             # Spark configuration + Dockerfile
+├── superset/                          # Superset configuration + Dockerfile
+│
+├── src/                               # ETL source code following the medallion architecture
+│   ├── bronze/                          # Bronze layer – raw ingested data from Kafka
+│   ├── silver/                          # Silver layer – cleaned, standardized, and enriched data
+│   ├── gold/                            # Gold layer – aggregated, analytics-ready data for BI/ML
+│   └── ...                           
+│
+├── readme/                            # Documentation, diagrams, notes
+│
+├── docker-compose-lakehouse.yml       # Docker Compose for the Lakehouse stack (MinIO, Hive, Postgres, Trino), and Superset
+├── docker-compose-spark.yml           # Docker Compose for Spark cluster
+└── docker-compose-kafka.yml           # Docker Compose for Kafka cluster, and Kafka UI
+
 ```
 
 ---
@@ -57,5 +69,56 @@ Before starting, please ensure you have:
 - DBeaver installed to connect to Trino to write SQL.
 
 ## 4.2 Setup & Initialization
+**Step 1:** Before running the pipeline, make sure `make` is installed. On Windows, you install Chocolatey first and then install Make:
+```powershell
+# Install Chocolatey (run in PowerShell as Administrator)
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+# Upgrade Chocolatey (optional but recommended)
+choco upgrade chocolatey
+# Install Make
+choco install make
+# Verify installation
+make --version
+```
 
-## 4.3 Run the pipeline
+**Step 2:** Install Hadoop & Hive to set up Hive Metastore:
+```bash
+# Navigate to hive/jars folder
+cd hive/jars
+# Run Makefile to install
+make download
+```
+
+**Step 3:** Set up the whole architecture through Docker:
+```bash
+# Create a Docker network "common-net" for all services to communicate with each other
+docker network create common-net
+# Start all services (download if needed) using Makefile
+make all-up
+```
+
+## 4.3 Service Access
+### Web UI
+- **MinIO UI:** http://localhost:9001
+  - User: minio
+  - Password: minio123
+- **Superset UI:** http://localhost:8088
+  - User: superset
+  - Password: superset
+- **Trino UI:** http://localhost:8080
+  - User: trino
+  - Password: 
+- **Kafka UI:** http://localhost:8081
+- **Spark Master UI:** http://localhost:8082
+- **Spark Worker 1 UI:** http://localhost:8083
+
+### Database / SQL Client
+- **Postgres:** localhost:5432 (connect via DBeaver)
+  - User: hive
+  - Password: hive
+  - Database: metastore
+- **Trino:** localhost:8080 (connect via DBeaver)
+  - User: trino
+  - Password:
+
+## 4.4 Run the pipeline
