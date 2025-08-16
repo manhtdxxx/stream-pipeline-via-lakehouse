@@ -8,7 +8,7 @@
 ---
 
 # 📌 1. Introduction
-⚠️ **Note:** This project is still ongoing and under active development.  
+⚠️ **Note:** This project is still ongoing.  
 
 This project demonstrates a **modern Lakehouse architecture** for streaming data pipelines, built on **Apache Iceberg tables**, providing ACID transactions, schema evolution, and snapshot-based consistency for reliable data storage. The main goal is to ingest raw streaming data as it arrives, **automatically triggering both ingestion and subsequent transformations**. Data is progressively refined through a **medallion architecture (Bronze → Silver → Gold)** for analytics and BI use cases.
 
@@ -132,3 +132,4 @@ make all-up
   - Password:
 
 ## 4.4 Run the pipeline
+⚠️ **Ongoing**
