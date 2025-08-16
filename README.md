@@ -8,7 +8,17 @@
 ---
 
 # 📌 1. Introduction
-This project's still ongoing.
+⚠️ **Note:** This project is still ongoing and under active development.  
+
+This project demonstrates a **modern Lakehouse architecture** for streaming data pipelines, built on **Apache Iceberg tables**, providing ACID transactions, schema evolution, and snapshot-based consistency for reliable data storage. The main goal is to ingest raw streaming data as it arrives, **automatically triggering both ingestion and subsequent transformations**. Data is progressively refined through a **medallion architecture (Bronze → Silver → Gold)** for analytics and BI use cases.
+
+**Data Source:** ...
+
+**Key features of this project include:**
+- `Unified Data Storage`: Combine the benefits of data lakes and data warehouses using a Lakehouse approach.
+- `Streaming ETL Pipeline`: Capture and process streaming data using Kafka & Spark Streaming.
+- `Query & Analytics`: Enable SQL querying on the Lakehouse using Trino and visualize insights with Superset.
+- `Containerized Architecture`: All services (Kafka, Spark, MinIO, Hive Metastore, Trino, Superset) are orchestrated via Docker for easy setup and reproducibility.
 
 ---
 
