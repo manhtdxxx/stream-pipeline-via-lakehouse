@@ -4,31 +4,30 @@ USER root
 
 # Install prerequisites
 RUN apt-get update && \
-    apt-get install -y curl python3-pip && \
-    apt-get clean && \
+    apt-get install -y curl && \
     rm -rf /var/lib/apt/lists/*
 
-# # Install Python dependencies (if you need)
-# RUN pip3 install --no-cache-dir \
-#     numpy==1.24.4 \
-#     pandas==1.5.3 \
-#     pyarrow==11.0.0 \
-#     confluent-kafka==2.5.3 \
-#     avro==1.11.3 \
-#     requests==2.31.0 \
-#     fastavro==1.9.0
-
-# Download required JARs
+# Download required JARs in folder 
 WORKDIR /tmp/jars
+
+# Jars for Spark to work with Kafka + Avro
 RUN curl -L -O https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.3.2/spark-sql-kafka-0-10_2.12-3.3.2.jar && \
     curl -L -O https://repo1.maven.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.12/3.3.2/spark-token-provider-kafka-0-10_2.12-3.3.2.jar && \
-    curl -L -O https://repo1.maven.org/maven2/org/apache/spark/spark-avro_2.12/3.3.2/spark-avro_2.12-3.3.2.jar && \
     curl -L -O https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/3.3.2/kafka-clients-3.3.2.jar && \
     curl -L -O https://repo1.maven.org/maven2/org/apache/commons/commons-pool2/2.11.1/commons-pool2-2.11.1.jar && \
-    mv *.jar /opt/bitnami/spark/jars/ && \
+    curl -L -O https://repo1.maven.org/maven2/org/apache/spark/spark-avro_2.12/3.3.2/spark-avro_2.12-3.3.2.jar
+
+# Jars for Spark to work with MinIO
+RUN curl -L https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.2/hadoop-aws-3.3.2.jar && \
+    curl -L https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.1026/aws-java-sdk-bundle-1.11.1026.jar
+
+# Jars for Spark to work with Iceberg
+RUN curl -L -O https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-spark-runtime-3.3_2.12/1.5.0/iceberg-spark-runtime-3.3_2.12-1.5.0.jar 
+
+# Move all jars to folder ...
+RUN mv *.jar /opt/bitnami/spark/jars/ && \
     rm -rf /tmp/jars
 
-# I haven't added jars for spark to work with Iceberg table
 
 # Switch back
 WORKDIR /opt/spark/app

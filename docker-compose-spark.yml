@@ -17,6 +17,7 @@ services:
       - "8082:8080" # web UI
     volumes:
       - ./spark/conf:/opt/bitnami/spark/conf
+      - ./src:/opt/spark/app
     networks:
       - common-net
     healthcheck:
