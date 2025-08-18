@@ -52,6 +52,8 @@ stream-pipeline-via-lakehouse/
 ├── spark/                             # Spark configuration + Dockerfile
 ├── superset/                          # Superset configuration + Dockerfile
 │
+├── app/                               # Custom API, fake data generator as a data source
+├── experiments/                       # Example runs / tests of the pipeline
 ├── src/                               # ETL source code following the medallion architecture
 │   ├── bronze/                          # Bronze layer – raw ingested data from Kafka
 │   ├── silver/                          # Silver layer – cleaned, standardized, and enriched data
@@ -63,7 +65,6 @@ stream-pipeline-via-lakehouse/
 ├── docker-compose-lakehouse.yml       # Docker Compose for the Lakehouse stack (MinIO, Hive, Postgres, Trino), and Superset
 ├── docker-compose-spark.yml           # Docker Compose for Spark cluster
 └── docker-compose-kafka.yml           # Docker Compose for Kafka cluster, and Kafka UI
-
 ```
 
 ---
