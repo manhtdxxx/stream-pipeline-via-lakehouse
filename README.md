@@ -133,4 +133,16 @@ make all-up
   - Password:
 
 ## 4.4 Run the pipeline
+### Step 1: Initializing Schema
+Once Trino container is running, you can initialize the Lakehouse schema using the SQL initialization script:
+```bash
+# Access Trino container
+make trino-bash
+# Run the SQL initialization script
+trino --server localhost:8080 --catalog iceberg --file /init/lakehouse-init.sql
+```
+Here is the result of running the schema initialization script:
+![Result of Initializing Schema on MinIO](readme/schema-init.png)
+
+### Step 2:
 ⚠️ **Ongoing**
