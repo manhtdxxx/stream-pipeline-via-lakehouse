@@ -15,10 +15,10 @@ This project demonstrates a **modern Lakehouse architecture** for streaming data
 **Data Source:** ...
 
 **Key features of this project include:**
-- `Unified Data Storage`: Combine the benefits of data lakes and data warehouses using a Lakehouse approach.
-- `Streaming ETL Pipeline`: Capture and process streaming data using Kafka & Spark Streaming.
-- `Query & Analytics`: Enable SQL querying on the Lakehouse using Trino and visualize insights with Superset.
-- `Containerized Architecture`: All services (Kafka, Spark, MinIO, Hive Metastore, Trino, Superset) are orchestrated via Docker for easy setup and reproducibility.
+- ***Unified Data Storage***: Combine the benefits of data lakes and data warehouses using a Lakehouse approach.
+- ***Streaming ETL Pipeline***: Capture and process streaming data using Kafka & Spark Streaming.
+- ***Query & Analytics***: Enable SQL querying on the Lakehouse using Trino and visualize insights with Superset.
+- ***Containerized Architecture***: All services (Kafka, Spark, MinIO, Hive Metastore, Trino, Superset) are orchestrated via Docker for easy setup and reproducibility.
 
 ---
 
@@ -29,12 +29,15 @@ This project demonstrates a **modern Lakehouse architecture** for streaming data
 ![Lakehouse Architecture](readme/lakehouse.png)
 
 **Test creating a table using Trino in DBeaver:**
+> The script is put under `experiments` folder
 
 ![Trino Test](readme/trino-example.png)
 
 **Check the result on MinIO:**
 
-![MinIO Result](readme/table-format.png)
+![MinIO Result](readme/iceberg-table-example-1.png)
+![MinIO Result](readme/iceberg-table-example-2.png)
+![MinIO Result](readme/iceberg-table-example-3.png)
 
 ## 2.2 Pipeline
 
