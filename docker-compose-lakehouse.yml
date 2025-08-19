@@ -57,6 +57,7 @@ services:
       - "8080:8080"
     volumes:
       - ./trino/etc:/etc/trino
+      - ./init/schema-init.sql:/init/lakehouse-init.sql
     networks:
       - common-net
 
